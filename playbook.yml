@@ -1,0 +1,20 @@
+- hosts: local
+
+  vars:
+    dest_dir: "/home/{{ ansible_user }}"
+
+  roles:
+  # - role: vim
+  # - role: zip
+  # - role: jdk-11
+  # - role: curl
+  # - role: git
+  # - role: jq
+  # - role: aws-cli
+  # - role: maven
+  # - role: meta
+  # - role: docker
+  # - role: serverless
+  # - role: aws-amplify-cli
+  # - role: faunadb
+  - role: configure-wsl

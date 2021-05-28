@@ -1,0 +1,14 @@
+---
+- name: Install OpenJDK 11
+  package:
+    state: present
+    name: "java-11-openjdk-devel"
+  become: yes
+  when:  ansible_facts["os_family"] == "RedHat"
+
+- name: Install OpenJDK 11
+  package:
+    state: present
+    name: "openjdk-11-jdk"
+  become: yes
+  when:  ansible_facts["os_family"] == "Debian"

@@ -1,0 +1,5 @@
+---
+dependencies:
+  - src: https://git.adesso.ch/ansible/npm
+    scm: git
+    name: npm

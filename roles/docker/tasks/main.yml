@@ -1,0 +1,27 @@
+---
+- name: download docker installer
+  get_url:
+    url: "https://get.docker.com"
+    dest: "/home/{{ ansible_user }}/get-docker.sh"
+
+- block:
+  - name: execute docker intalller
+    shell: "sh /home/{{ ansible_user }}/get-docker.sh"
+    become: yes
+  always:
+  - name: delete docker installer
+    file:
+      path: "/home/{{ ansible_user }}/get-docker.sh"
+      state: absent
+
+- name: Ensure group "docker" exists
+  group:
+    name: docker
+    state: present
+
+- name: Add ansible user to docker group
+  user:
+    name: '{{ ansible_user }}'
+    groups: docker
+    append: yes
+  become: yes

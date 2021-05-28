@@ -1,0 +1,75 @@
+---
+- name: Set nodesource URL for Debian
+  set_fact:
+    nodesource_url: "https://deb.nodesource.com/setup_{{ version }}.x"
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Set nodesource URL for RedHat
+  set_fact:
+    nodesource_url: "https://rpm.nodesource.com/setup_{{ version }}.x"
+  when: ansible_facts["os_family"] == "RedHat"
+
+- name: Download Node {{ version }} installation
+  get_url:
+    url: "{{ nodesource_url }}"
+    dest: "/home/{{ ansible_user }}/nodesource_setup.sh"
+    mode: 0775
+
+- block:
+  - name: add repos
+    shell: "sh /home/{{ ansible_user }}/nodesource_setup.sh"
+    become: yes
+  always:
+  - name: cleanup
+    file:
+      path: "/home/{{ ansible_user }}/nodesource_setup.sh"
+      state: absent
+
+- name: install nodejs
+  package:
+    name: nodejs
+    state: present
+  become: yes
+
+- name: create folder for npm globals
+  file:
+    path: "/home/{{ ansible_user }}/.npm-global"
+    state: directory
+
+- name: set npm prefix
+  shell: "npm config set prefix '/home/{{ ansible_user }}/.npm-global'"
+
+- name: export path with new npm globals dir
+  copy:
+    dest: /etc/profile.d/npm-path.sh
+    content: 'PATH=$PATH:/home/{{ ansible_user }}/.npm-global/bin'
+  become: yes
+
+- name: update npm
+  shell: "npm i -g npm"
+
+- name: remove /usr/bin/npm link
+  file:
+    path: "/usr/bin/npm"
+    state: absent
+  become: yes
+
+- name: remove /usr/bin/npx link
+  file:
+    path: "/usr/bin/npx"
+    state: absent
+  become: yes
+
+- name: Create npm link
+  file:
+    src: "/home/{{ ansible_user }}/.npm-global/bin/npm"
+    dest: "/usr/bin/npm"
+    state: link
+  become: yes
+
+- name: Create npx link
+  file:
+    src: "/home/{{ ansible_user }}/.npm-global/bin/npx"
+    dest: "/usr/bin/npx"
+    state: link
+  become: yes

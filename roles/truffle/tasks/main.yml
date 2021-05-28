@@ -1,0 +1,5 @@
+---
+- name: Install truffle
+  npm:
+    name: truffle
+    global: yes

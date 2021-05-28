@@ -1,0 +1,5 @@
+---
+dependencies:
+  - src: https://git.adesso.ch/ansible/jdk-11
+    scm: git
+    name: jdk-11

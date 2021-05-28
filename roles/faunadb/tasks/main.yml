@@ -1,0 +1,69 @@
+---
+- name: Install FaunaDB
+  npm:
+    name: faunadb
+    global: yes
+
+#- name: Install faunadb-migrate
+#  npm:
+#    name: "git+https://github.com/BrunoQuaresma/faunadb-migrate.git#master"
+#    global: yes
+
+- name: Install faunadb-shell
+  npm:
+    name: fauna-shell
+    global: yes
+
+- name: Delete destination directory
+  file:
+    path: "{{ dest_folder }}"
+    state: absent
+  become: yes
+
+- name: Create destination directory
+  file:
+    path: "{{ dest_folder }}"
+    state: directory
+  become: yes
+
+- name: Download Fauna Data Manager (FDM)
+  get_url:
+    url: "https://fauna-repo.s3.amazonaws.com/fdm/fdm.zip"
+    dest: "{{ dest_folder }}/fdm.zip"
+  become: yes
+
+- block:
+  - name: Unzip FDM
+    unarchive:
+      src: "{{ dest_folder }}/fdm.zip"
+      dest: "{{ dest_folder }}"
+    become: yes
+  always:
+  - name: Delete downloaded zip file
+    file:
+      path: "{{ dest_folder }}/fdm.zip"
+      state: absent
+    become: yes
+
+- name: Move FDM
+  shell: "mv {{ dest_folder }}/fdm-*/* {{ dest_folder }}"
+  become: yes
+
+- name: Delete FDM folder
+  file:
+    path: "{{ dest_folder }}/fdm-*"
+    state: absent
+  become: yes
+
+- name: Remove fdm link
+  file:
+    path: "/usr/local/bin/fdm"
+    state: absent
+  become: yes
+
+- name: Create fdm link
+  file:
+    src: "{{ dest_folder }}/fdm"
+    dest: "/usr/local/bin/fdm"
+    state: link
+  become: yes

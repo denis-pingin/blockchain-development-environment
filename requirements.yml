@@ -1,0 +1,52 @@
+---
+- src: https://git.adesso.ch/ansible/vim
+  scm: git
+  name: vim
+
+- src: https://git.adesso.ch/ansible/jdk-11
+  scm: git
+  name: jdk-11
+
+- src: https://git.adesso.ch/ansible/git
+  scm: git
+  name: git
+
+- src: https://git.adesso.ch/ansible/docker
+  scm: git
+  name: docker
+
+- src: https://git.adesso.ch/ansible/jq
+  scm: git
+  name: jq
+
+- src: https://git.adesso.ch/ansible/zip
+  scm: git
+  name: zip
+
+- src: https://git.adesso.ch/ansible/aws-cli
+  scm: git
+  name: aws-cli
+
+- src: https://git.adesso.ch/ansible/curl
+  scm: git
+  name: curl
+
+- src: https://git.adesso.ch/ansible/maven
+  scm: git
+  name: maven
+
+- src: https://git.adesso.ch/ansible/meta
+  scm: git
+  name: meta
+
+- src: https://git.adesso.ch/ansible/serverless
+  scm: git
+  name: serverless
+
+- src: https://git.adesso.ch/ansible/aws-amplify-cli
+  scm: git
+  name: aws-amplify-cli
+
+- src: https://git.adesso.ch/ansible/faunadb
+  scm: git
+  name: faunadb

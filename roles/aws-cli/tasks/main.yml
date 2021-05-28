@@ -1,0 +1,43 @@
+---
+- name: Delete destination directory
+  file:
+    path: "{{ dest_folder }}"
+    state: absent
+  become: yes
+
+- name: Create destination directory
+  file:
+    path: "{{ dest_folder }}"
+    state: directory
+  become: yes
+
+- name: Download AWS CLI installer
+  get_url:
+    url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: "{{ dest_folder }}/awscliv2.zip"
+  become: yes
+
+- block:
+  - name: Unzip AWS CLI installer
+    unarchive:
+      src: "{{ dest_folder }}/awscliv2.zip"
+      dest: "{{ dest_folder }}"
+    become: yes
+  always:
+  - name: Delete downloaded zip file
+    file:
+      path: "{{ dest_folder }}/awscliv2.zip"
+      state: absent
+    become: yes
+
+- block:
+  - name: Execute AWS CLI installer
+    shell: "{{ dest_folder }}/aws/install"
+    become: yes
+  always:
+  - name: Delete AWS CLI installer
+    file:
+      path: "{{ dest_folder }}"
+      state: absent
+    become: yes
+

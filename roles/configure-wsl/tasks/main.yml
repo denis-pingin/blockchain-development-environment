@@ -1,0 +1,8 @@
+---
+- name: Configure WSL
+  copy:
+    dest: "/etc/wsl.conf"
+    content: |      
+      [interop]
+      appendWindowsPath=false
+  become: yes

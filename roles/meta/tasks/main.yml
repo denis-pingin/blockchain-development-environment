@@ -1,0 +1,10 @@
+---
+- name: Install meta
+  shell: "npm install -g meta"
+
+- name: Create meta link
+  file:
+    src: "/home/{{ ansible_user }}/.npm-global/bin/meta"
+    dest: "/usr/bin/meta"
+    state: link
+  become: yes
